@@ -48,6 +48,7 @@ h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:500; letter-spacin
 .ic{width:20px; height:20px; stroke:currentColor; stroke-width:1.6; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
 
 
+
 .progress{position:fixed; top:0; left:0; right:0; height:3px; background:rgba(30,42,27,0.08); z-index:60;}
 .progress-fill{height:100%; width:1%; background:var(--matcha-700); transition:width .5s cubic-bezier(.4,0,.2,1);}
 
@@ -58,7 +59,6 @@ h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:500; letter-spacin
   color:var(--ink);
 }
 .back-btn .ic{width:18px; height:18px;}
-
 
 .screen{display:none; min-height:100vh; width:100%; position:relative; overflow:hidden;}
 .screen.active{display:block; animation:enter .6s cubic-bezier(.2,.8,.2,1) both;}
@@ -105,7 +105,7 @@ p.fine{font-size:13.5px; color:rgba(30,42,27,0.55); font-style:italic;}
 .hero-tag{font-size:11.5px; color:rgba(251,249,240,0.4); letter-spacing:.06em;}
 .blob{position:absolute; border-radius:50%; filter:blur(2px); opacity:.5; z-index:1;}
 
-
+/
 .stack{display:flex; flex-direction:column; gap:16px; width:100%;}
 .card{
   text-align:left; border:none; cursor:pointer; border-radius:6px; padding:24px 22px;
@@ -151,6 +151,16 @@ p.fine{font-size:13.5px; color:rgba(30,42,27,0.55); font-style:italic;}
 .meta-row .ic{margin-top:1px;}
 .meta-k{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; opacity:.6;}
 .meta-v{font-size:14px; font-weight:600; line-height:1.45;}
+.meetup-btn{
+  margin-top:10px; border:1.3px solid var(--matcha-600); background:transparent; color:var(--matcha-700);
+  font-family:'Work Sans',sans-serif; font-weight:700; font-size:12.5px; padding:8px 16px;
+  border-radius:100px; cursor:pointer; transition:all .15s ease;
+}
+.meetup-btn:hover{background:rgba(58,90,60,0.08);}
+.meetup-btn.confirmed{background:var(--matcha-700); color:var(--cream); border-color:var(--matcha-700); cursor:default;}
+.teal-panel .meetup-btn{border-color:rgba(251,249,240,0.55); color:var(--teal-100);}
+.teal-panel .meetup-btn:hover{background:rgba(251,249,240,0.08);}
+.teal-panel .meetup-btn.confirmed{background:var(--teal-100); color:var(--teal-950); border-color:var(--teal-100);}
 
 
 .chip-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%;}
@@ -240,7 +250,7 @@ textarea.when-input:focus{outline:none; border-color:var(--matcha-600);}
   <div class="blob" style="width:320px; height:320px; background:radial-gradient(circle, var(--matcha-500), transparent 70%); top:-60px; right:-90px;"></div>
   <div class="blob" style="width:200px; height:200px; background:radial-gradient(circle, var(--gold), transparent 70%); bottom:60px; left:-70px; opacity:.18;"></div>
   <div class="hero-wrap">
-    <div class="monogram">Hilda</div>
+    <div class="monogram">H·J·S</div>
     <div>
       <div class="hero-for">Untuk</div>
       <div class="hero-name">Hilda Junita Sianturi</div>
@@ -271,7 +281,7 @@ jalan yuk?</h1>
 <!-- ============ CHURCH CHOICE ============ -->
 <div class="screen" id="screen-church">
   <div class="wrap">
-    <div class="eyebrow">01 — Titik awal</div>
+    <div class="eyebrow">01 -  Titik awal</div>
     <h2 class="headline">Mau mulai dari mana?</h2>
     <p class="lede">Ada dua arah, dua suasana yang cukup berbeda.</p>
     <div class="stack">
@@ -300,10 +310,11 @@ jalan yuk?</h1>
     <div class="dest-block">
       <div class="dk">Jadwal & titik ketemu</div>
       <div class="meta-row"><div class="meta-icon" data-icon="clock"></div><div><div class="meta-k">Misa</div><div class="meta-v">Pukul 11.00</div></div></div>
-      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div></div></div>
+      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div><button type="button" class="meetup-btn" onclick="confirmMeetup(this,'warnMeetupBogor')">Yaudah, aku tunggu</button></div></div>
     </div>
     <p class="fine">Tujuan habis misa, biar kamu yang pilih di halaman berikutnya.</p>
-    <button class="btn" onclick="showScreen('screen-bogor-dest')">Pilih tujuan</button>
+    <div class="warn" id="warnMeetupBogor"></div>
+    <button class="btn" onclick="goBogorDestGate()">Pilih tujuan</button>
   </div>
 </div>
 
@@ -318,14 +329,14 @@ jalan yuk?</h1>
         <div class="card-icon" data-icon="brush"></div>
         <div class="card-tag">Pilihan 1</div>
         <div class="card-title">Visi Art Studio</div>
-        <div class="card-desc">Melukis bebas di atas kanvas, sambil ngemil dan ngopi santai — sekalian lihat-lihatan lukisan siapa yang paling bagus.</div>
+        <div class="card-desc">Melukis bebas di atas kanvas, sambil ngemil dan ngopi santai - sekalian lihat-lihatan lukisan siapa yang paling bagus :D.</div>
         <div class="card-cta">Pilih studio →</div>
       </button>
       <button class="card d" onclick="chooseBogorDest('playtopia')">
         <div class="card-icon" data-icon="peak"></div>
         <div class="card-tag">Pilihan 2</div>
         <div class="card-title">Playtopia Adventure</div>
-        <div class="card-desc">Arena bermain indoor dengan puluhan wahana. Seru banget — walau harus jujur, lumayan bikin capek setelahnya.</div>
+        <div class="card-desc">Arena bermain indoor dengan puluhan wahana. Katanya sih seru banget tapi jujur lumayan bikin capek keliatannya.</div>
         <div class="card-cta">Pilih Playtopia →</div>
       </button>
     </div>
@@ -353,8 +364,8 @@ jalan yuk?</h1>
   <div class="wrap">
     <div class="eyebrow">Setelah misa</div>
     <h2 class="headline">Visi Art Studio</h2>
-    <p class="lede">Ada di dalam 0251/Societeit, konsepnya walk-in, jadi nggak perlu reservasi dulu (Bisa ganti kalau berubah pikiran). Kita bebas melukis di atas kanvas sendiri-sendiri, sambil ngemil dan ngopi santai, lalu lihat-lihatan lukisan siapa yang paling bagus :D.</p>
-    <p class="fine">Buka tiap hari jam 10.00-21.00.</p>
+    <p class="lede">Ada di dalam 0251/Societeit (kalau gk salah). Konsepnya walk-in, jadi nggak perlu reservasi dulu(kalau mau ganti bisa nantinya). Kita bebas melukis di atas kanvas sendiri-sendiri, sambil ngemil dan ngopi santai, lalu lihat-lihatan lukisan siapa yang paling bagus.</p>
+    <p class="fine">Buka tiap hari, 10.00-21.00.</p>
     <button class="btn gold" onclick="showScreen('screen-activities-bogor')">Lanjut</button>
   </div>
 </div>
@@ -374,7 +385,7 @@ jalan yuk?</h1>
   <div class="wrap">
     <div class="eyebrow">Setelah misa</div>
     <h2 class="headline">Playtopia Adventure</h2>
-    <p class="lede">Ada di lantai 3 Lippo Plaza Ekalokasari - lebih dari 25 wahana (mungkin), dari wall climbing, wave slide, sampai kolam bola. Katanya Seru banget, tapi siap-siap agak capek setelahnya.</p>
+    <p class="lede">Ada di lantai 3 Lippo Plaza Ekalokasari - lebih dari 25 wahana (keknya segitu dehh), dari wall climbing, wave slide, sampai kolam bola. Katanya sih seru banget, tapi siap-siap agak capek setelahnya.</p>
     <p class="fine">Buka tiap hari, 10.00-22.00.</p>
     <button class="btn dark" onclick="showScreen('screen-activities-bogor')">Lanjut</button>
   </div>
@@ -389,10 +400,11 @@ jalan yuk?</h1>
     <div class="dest-block teal">
       <div class="dk">Jadwal & titik ketemu</div>
       <div class="meta-row"><div class="meta-icon" data-icon="clock"></div><div><div class="meta-k">Misa</div><div class="meta-v">Pukul 08.30</div></div></div>
-      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div></div></div>
+      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div><button type="button" class="meetup-btn" onclick="confirmMeetup(this,'warnMeetupGrogol')">Yaudah, aku tunggu</button></div></div>
     </div>
     <p class="fine">Yang ini kemungkinan besar lebih ramai - dan lebih seru.</p>
-    <button class="btn teal" onclick="showScreen('screen-aquarium')">Lanjut</button>
+    <div class="warn" id="warnMeetupGrogol"></div>
+    <button class="btn teal" onclick="goAquariumGate()">Lanjut</button>
   </div>
 </div>
 
@@ -410,7 +422,7 @@ jalan yuk?</h1>
   <div class="wrap">
     <div class="eyebrow teal on-dark">Setelah misa</div>
     <h2 class="headline">Jakarta Aquarium & Safari</h2>
-    <p class="lede">Ada di dalam Neo Soho Mall, Grogol - lebih dari 600 spesies satwa air, dari terumbu karang sampai penguin. Gampang disambung dengan makan Siang setelahnya, kek tinggal turun beberapa lantai.</p>
+    <p class="lede">Ada di dalam Neo Soho Mall, Grogol - lebih dari 600 spesies satwa air, dari terumbu karang sampai penguin. Gampang disambung buat makan sore/siang setelahnya, tinggal turun beberapa lantai.</p>
     <p class="fine">Buka setiap hari, siang sampai malam.</p>
     <button class="btn teal" onclick="showScreen('screen-activities-jakarta')">Lanjut</button>
   </div>
@@ -419,7 +431,7 @@ jalan yuk?</h1>
 <!-- ============ ACTIVITIES: BOGOR (shared, dynamic) ============ -->
 <div class="screen" id="screen-activities-bogor">
   <div class="wrap">
-    <div class="eyebrow" id="actBogorEyebrow">02 - Bogor</div>
+    <div class="eyebrow" id="actBogorEyebrow">02 — Bogor</div>
     <h2 class="headline" id="actBogorHeadline">Nanti di sana, mau ngapain?</h2>
     <p class="fine">Boleh pilih lebih dari satu.</p>
     <div class="chip-grid" id="actBogorGrid"></div>
@@ -431,7 +443,7 @@ jalan yuk?</h1>
 <!-- ============ ACTIVITIES: JAKARTA ============ -->
 <div class="screen teal-panel" id="screen-activities-jakarta">
   <div class="wrap">
-    <div class="eyebrow teal on-dark">02 - Jakarta</div>
+    <div class="eyebrow teal on-dark">02 — Jakarta</div>
     <h2 class="headline">Di Neo Soho, mau fokus ke apa?</h2>
     <p class="fine">Boleh pilih lebih dari satu.</p>
     <div class="chip-grid" id="actJktGrid"></div>
@@ -443,8 +455,8 @@ jalan yuk?</h1>
 <!-- ============ VIBE ============ -->
 <div class="screen" id="screen-vibe">
   <div class="wrap">
-    <div class="eyebrow">03 - Suasana</div>
-    <h2 class="headline">Biar nggak salah konsep saya.</h2>
+    <div class="eyebrow">03 — Suasana</div>
+    <h2 class="headline">Biar nggak salah konsep.</h2>
     <p class="fine">Kira-kira jalannya mau kayak apa?</p>
     <div class="chip-grid" id="vibeGrid"></div>
     <div class="warn" id="warnVibe"></div>
@@ -486,8 +498,8 @@ jalan yuk?</h1>
     <h2 class="headline">Sudah yakin?</h2>
     <p class="lede">Kalau sudah, tinggal satu hal yang perlu diatur:</p>
     <h2 class="headline" style="font-size:24px; margin-top:-4px;">Apakah ada request?</h2>
-    <p class="fine">Kalau mau, kasih tahu juga kira-kira kamu mau request apa - opsional saja.</p>
-    <textarea class="when-input" id="whenInput" placeholder="misalnya: Pulangnya jangan kelamaan, atau apapun itu. Saya menerima semua permintaan..."></textarea>
+    <p class="fine">Kalau mau, kasih tahu juga kamu ada request atau engga - opsional saja.</p>
+    <textarea class="when-input" id="whenInput" placeholder="misalnya: pulangnya jangan lama-lama atau apapun itu..."></textarea>
     <button class="btn gold" onclick="sendToWhatsApp()">Kirim jawabannya</button>
     <div class="copy-note" id="waFallback" style="display:none;"></div>
     <p class="fine" style="margin-top:22px;">— Kirman</p>
@@ -499,7 +511,7 @@ jalan yuk?</h1>
 <div class="screen" id="screen-egg">
   <div class="wrap">
     <h2 class="headline">Kalau u sampai di sini...</h2>
-    <p class="lede">yang pertama u tajem banget ngeliatnya. Kedua berarti gw memang benar-benar niat ya cuma untuk ngajak u jalan.</p>
+    <p class="lede">Pertama u emang teliti banget, kedua berarti w memang benar-benar niat ya, cuma untuk mengajak u jalan.</p>
     <p class="fine">Sudah, jangan ditertawakan.</p>
     <button class="btn-quiet" onclick="showScreen('screen-ending')">kembali</button>
   </div>
@@ -507,7 +519,7 @@ jalan yuk?</h1>
 
 <script>
 
-const WA_NUMBER = "6285156959662";
+const WA_NUMBER = "6285156959662"; 
 
 /* ===================== ICONS ===================== */
 const ICONS = {
@@ -566,8 +578,36 @@ function fillIcons(){
 }
 fillIcons();
 
+/* ===================== MEETUP CONFIRM (one-way, no decline, required) ===================== */
+function resetMeetupButtons(){
+  document.querySelectorAll('.meetup-btn').forEach(b=>{
+    b.classList.remove('confirmed');
+    b.disabled = false;
+    b.textContent = 'Yaudah, aku tunggu';
+  });
+  state.meetupConfirmed = false;
+  const wb = document.getElementById('warnMeetupBogor'); if(wb) wb.textContent = '';
+  const wg = document.getElementById('warnMeetupGrogol'); if(wg) wg.textContent = '';
+}
+function confirmMeetup(btn, warnId){
+  if(btn.classList.contains('confirmed')) return;
+  btn.classList.add('confirmed');
+  btn.textContent = 'Sip, ketemu di sana!';
+  btn.disabled = true;
+  state.meetupConfirmed = true;
+  if(warnId) document.getElementById(warnId).textContent = '';
+}
+function goBogorDestGate(){
+  if(!state.meetupConfirmed){ document.getElementById('warnMeetupBogor').textContent = 'konfirmasi dulu di atas ya.'; return; }
+  showScreen('screen-bogor-dest');
+}
+function goAquariumGate(){
+  if(!state.meetupConfirmed){ document.getElementById('warnMeetupGrogol').textContent = 'konfirmasi dulu di atas ya.'; return; }
+  showScreen('screen-aquarium');
+}
+
 /* ===================== STATE ===================== */
-const state = { church:null, bogorDest:null, activities:[], vibe:[], final:'' };
+const state = { church:null, bogorDest:null, activities:[], vibe:[], final:'', meetupConfirmed:false };
 const MASS_TIME = { bogor:'Pukul 11.00', grogol:'Pukul 08.30' };
 
 /* ===================== INTRO ROUTE PREVIEW ===================== */
@@ -588,6 +628,7 @@ const MASS_TIME = { bogor:'Pukul 11.00', grogol:'Pukul 08.30' };
 function chooseChurch(which){
   state.church = which;
   state.activities = [];
+  resetMeetupButtons();
   if(which === 'bogor'){
     renderItinerary('itiBogor', [['church','Katedral Bogor'],['pin','Kamu pilih tujuannya'],['bowl','Kulineran'],['camera','Foto-foto'],['chat','Ngobrol']], false);
     showScreen('screen-route-bogor');
@@ -731,7 +772,7 @@ function sendToWhatsApp(){
     destLabel = 'Jakarta Aquarium & Safari, Neo Soho';
   }
 
-  let msg = `Hai Kirman, sudah aku isi rencananya.\n\n`;
+  let msg = `Hai Kirman yang baik hati dan tidak sombong, sudah aku isi rencananya.\n\n`;
   msg += `Titik awal: ${startLabel}\n`;
   msg += `Jadwal misa: ${MASS_TIME[state.church]}\n`;
   msg += `Tujuan: ${destLabel}\n`;
@@ -739,7 +780,7 @@ function sendToWhatsApp(){
   msg += `Suasana: ${state.vibe.join(', ')}\n`;
   msg += `Ekspektasi: ${state.final}\n`;
   if(when){ msg += `Request: ${when}\n`; }
-  msg += `\nAyo atur jadinya.`;
+  msg += `\nSee you, 20 September!. I tungguin di MRT Lebak Bulus yaaa.`;
 
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
   const win = window.open(url, '_blank');
