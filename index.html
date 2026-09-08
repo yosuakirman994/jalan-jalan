@@ -738,7 +738,7 @@ function sendToWhatsApp(){
   msg += `Aktivitas: ${state.activities.join(', ')}\n`;
   msg += `Suasana: ${state.vibe.join(', ')}\n`;
   msg += `Ekspektasi: ${state.final}\n`;
-  if(when){ msg += `Kira-kira bisa: ${when}\n`; }
+  if(when){ msg += `Request: ${when}\n`; }
   msg += `\nAyo atur jadinya.`;
 
   const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
