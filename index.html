@@ -1,0 +1,754 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+<title>Untuk Hilda — sebuah ajakan kecil</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+
+
+:root{
+  --ink:#1E2A1B;
+  --matcha-950:#152418;
+  --matcha-800:#26402A;
+  --matcha-700:#3A5A3C;
+  --matcha-600:#4B6E49;
+  --matcha-500:#6C8B5C;
+  --matcha-300:#A7C08D;
+  --matcha-100:#E7EEDC;
+  --teal-950:#132E2C;
+  --teal-700:#245250;
+  --teal-500:#3E756E;
+  --teal-100:#DCEAE6;
+  --lime-700:#5C8F2E;
+  --lime-300:#B9D97A;
+  --studio-paper:#F4EEE0;
+  --cream:#FBF9F0;
+  --paper:#FFFFFB;
+  --gold:#B9924C;
+  --gold-deep:#8F6F32;
+  --line:rgba(30,42,27,0.14);
+  --shadow:0 14px 36px rgba(21,36,24,0.14);
+}
+*{box-sizing:border-box;}
+html,body{margin:0; padding:0;}
+body{
+  background:var(--cream);
+  color:var(--ink);
+  font-family:'Work Sans', sans-serif;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+@media (prefers-reduced-motion: reduce){ *{animation-duration:.01ms !important; transition-duration:.01ms !important;} }
+
+h1,h2,h3{font-family:'Fraunces', serif; margin:0; font-weight:500; letter-spacing:-0.01em; line-height:1.14;}
+
+.ic{width:20px; height:20px; stroke:currentColor; stroke-width:1.6; fill:none; stroke-linecap:round; stroke-linejoin:round; flex-shrink:0;}
+
+
+.progress{position:fixed; top:0; left:0; right:0; height:3px; background:rgba(30,42,27,0.08); z-index:60;}
+.progress-fill{height:100%; width:1%; background:var(--matcha-700); transition:width .5s cubic-bezier(.4,0,.2,1);}
+
+.back-btn{
+  position:fixed; top:16px; left:16px; z-index:55; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--line); background:var(--paper); cursor:pointer;
+  display:none; align-items:center; justify-content:center; box-shadow:0 6px 16px rgba(21,36,24,0.14);
+  color:var(--ink);
+}
+.back-btn .ic{width:18px; height:18px;}
+
+
+.screen{display:none; min-height:100vh; width:100%; position:relative; overflow:hidden;}
+.screen.active{display:block; animation:enter .6s cubic-bezier(.2,.8,.2,1) both;}
+@keyframes enter{ from{opacity:0; transform:translateY(16px);} to{opacity:1; transform:translateY(0);} }
+@keyframes fadeUp{ to{opacity:1;} }
+
+.wrap{max-width:480px; margin:0 auto; padding:88px 26px 56px; display:flex; flex-direction:column; align-items:center; text-align:center; gap:18px; min-height:100vh; justify-content:center; position:relative; z-index:2;}
+
+.eyebrow{font-size:12.5px; letter-spacing:.09em; color:var(--matcha-600); font-weight:600; text-transform:uppercase;}
+.eyebrow.on-dark{color:var(--matcha-300);}
+.eyebrow.teal{color:var(--teal-500);}
+.eyebrow.teal.on-dark{color:var(--teal-100);}
+
+h2.headline{font-size:clamp(27px,7vw,36px); white-space:pre-line;}
+p.lede{font-size:16px; line-height:1.65; color:rgba(30,42,27,0.72); max-width:380px;}
+p.fine{font-size:13.5px; color:rgba(30,42,27,0.55); font-style:italic;}
+
+/* buttons */
+.btn{
+  appearance:none; border:none; cursor:pointer; font-family:'Work Sans',sans-serif;
+  font-weight:600; font-size:15.5px; padding:15px 32px; border-radius:3px;
+  background:var(--matcha-700); color:var(--cream); letter-spacing:.01em;
+  transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+  box-shadow:0 10px 24px rgba(58,90,60,0.28);
+}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:translateY(0) scale(.98);}
+.btn[disabled]{opacity:.35; cursor:not-allowed; box-shadow:none; transform:none;}
+.btn.teal{background:var(--teal-700); box-shadow:0 10px 24px rgba(36,82,80,0.28);}
+.btn.gold{background:var(--gold-deep); box-shadow:0 10px 24px rgba(143,111,50,0.34);}
+.btn.dark{background:var(--matcha-950); box-shadow:0 10px 24px rgba(21,36,24,0.3);}
+.btn-quiet{background:transparent; border:1px solid var(--line); color:var(--ink); font-size:13.5px; padding:10px 20px; border-radius:3px; cursor:pointer;}
+
+
+#screen-opening{background:radial-gradient(120% 90% at 82% 8%, var(--matcha-700) 0%, var(--matcha-950) 62%);}
+.hero-wrap{max-width:520px; margin:0 auto; min-height:100vh; padding:56px 30px 60px; display:flex; flex-direction:column; justify-content:space-between; position:relative; z-index:2; text-align:left;}
+.monogram{width:46px; height:46px; border:1px solid rgba(251,249,240,0.35); border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:'Fraunces',serif; font-size:14px; color:var(--gold); letter-spacing:.04em;}
+.hero-for{font-size:12.5px; letter-spacing:.14em; text-transform:uppercase; color:rgba(251,249,240,0.55); margin-top:34px;}
+.hero-name{font-family:'Fraunces',serif; font-size:19px; color:var(--matcha-100); margin-top:6px;}
+.hero-headline{font-size:clamp(38px,10vw,54px); color:var(--cream); margin-top:26px; white-space:pre-line;}
+.hero-sub{font-size:15.5px; color:rgba(251,249,240,0.62); margin-top:16px; max-width:320px; line-height:1.6;}
+.hero-date{display:inline-block; margin-top:20px; padding:7px 14px; border:1px solid rgba(185,146,74,0.5); border-radius:100px; font-size:12.5px; letter-spacing:.05em; color:var(--gold); font-weight:600;}
+.hero-foot{display:flex; align-items:center; justify-content:space-between; margin-top:40px;}
+.hero-tag{font-size:11.5px; color:rgba(251,249,240,0.4); letter-spacing:.06em;}
+.blob{position:absolute; border-radius:50%; filter:blur(2px); opacity:.5; z-index:1;}
+
+
+.stack{display:flex; flex-direction:column; gap:16px; width:100%;}
+.card{
+  text-align:left; border:none; cursor:pointer; border-radius:6px; padding:24px 22px;
+  background:var(--paper); box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease;
+  display:flex; flex-direction:column; gap:8px; border-top:3px solid var(--matcha-600);
+}
+.card.b{border-top-color:var(--teal-500);}
+.card.c{border-top-color:var(--gold-deep);}
+.card.d{border-top-color:var(--lime-700);}
+.card:hover{transform:translateY(-3px);}
+.card-icon{color:var(--matcha-700); margin-bottom:2px;}
+.card.b .card-icon{color:var(--teal-700);}
+.card.c .card-icon{color:var(--gold-deep);}
+.card.d .card-icon{color:var(--lime-700);}
+.card-tag{font-size:11px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; color:var(--matcha-600);}
+.card.b .card-tag{color:var(--teal-500);}
+.card.c .card-tag{color:var(--gold-deep);}
+.card.d .card-tag{color:var(--lime-700);}
+.card-title{font-size:20px;}
+.card-desc{font-size:14px; color:rgba(30,42,27,0.65); line-height:1.55;}
+.card-cta{margin-top:6px; font-size:13.5px; font-weight:700; color:var(--matcha-700); display:flex; align-items:center; gap:6px;}
+.card.b .card-cta{color:var(--teal-700);}
+.card.c .card-cta{color:var(--gold-deep);}
+.card.d .card-cta{color:var(--lime-700);}
+
+
+.iti{display:flex; flex-direction:column; align-items:center; width:100%; gap:0;}
+.iti-row{display:flex; align-items:center; gap:14px; width:100%; max-width:300px; opacity:0; animation:fadeUp .45s ease forwards;}
+.iti-row .dot-col{display:flex; flex-direction:column; align-items:center;}
+.iti-row .num{width:34px; height:34px; border-radius:50%; background:var(--matcha-100); color:var(--matcha-700); display:flex; align-items:center; justify-content:center;}
+.iti-row.teal-mode .num{background:var(--teal-100); color:var(--teal-700);}
+.iti-row .stem{width:1px; height:26px; background:var(--line); margin:2px 0;}
+.iti-row .txt{font-size:15px; font-weight:600; text-align:left;}
+
+/* destination / meta info blocks */
+.dest-block{width:100%; background:var(--matcha-100); border-radius:6px; padding:20px 20px; text-align:left; display:flex; flex-direction:column; gap:8px;}
+.dest-block.teal{background:var(--teal-100);}
+.dest-block .dk{font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; color:var(--matcha-700);}
+.dest-block.teal .dk{color:var(--teal-700);}
+.dest-block h3{font-size:19px;}
+.dest-block p{font-size:14px; line-height:1.6; color:rgba(30,42,27,0.68); margin:0;}
+.meta-row{display:flex; gap:10px; align-items:flex-start;}
+.meta-row .ic{margin-top:1px;}
+.meta-k{font-size:10.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; opacity:.6;}
+.meta-v{font-size:14px; font-weight:600; line-height:1.45;}
+
+
+.chip-grid{display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%;}
+.chip{
+  border:1.3px solid var(--line); background:var(--paper); border-radius:5px; padding:14px 13px;
+  display:flex; align-items:center; gap:10px; cursor:pointer; text-align:left;
+  font-size:14.5px; font-weight:600; color:var(--ink); transition:all .15s ease;
+}
+.chip .ic{color:var(--matcha-600);}
+.chip:hover{border-color:var(--matcha-500);}
+.chip.selected{background:var(--matcha-700); border-color:var(--matcha-700); color:var(--cream);}
+.chip.selected .ic{color:var(--matcha-100);}
+.chip.selected.teal-mode{background:var(--teal-700); border-color:var(--teal-700);}
+.chip.selected.teal-mode .ic{color:var(--teal-100);}
+.chip.wide{grid-column:1/-1;}
+.chip.locked{cursor:default;}
+.req-tag{margin-left:auto; font-size:9.5px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; opacity:.75; flex-shrink:0;}
+.warn{font-size:12.5px; color:var(--gold-deep); font-weight:600; min-height:16px;}
+
+.final-list{display:flex; flex-direction:column; gap:10px; width:100%;}
+.final-opt{border:1.3px solid var(--line); background:var(--paper); border-radius:5px; padding:15px 16px; text-align:left; font-size:14.5px; font-weight:600; cursor:pointer;}
+.final-opt.selected{background:var(--matcha-700); border-color:var(--matcha-700); color:var(--cream);}
+
+
+.teal-panel{background:radial-gradient(120% 90% at 20% 0%, var(--teal-700) 0%, var(--teal-950) 68%); color:var(--cream);}
+.teal-panel .lede{color:rgba(251,249,240,0.68);}
+.teal-panel .fine{color:rgba(251,249,240,0.5);}
+.teal-panel .dest-block{background:rgba(251,249,240,0.08);}
+.teal-panel .dest-block .dk{color:var(--teal-100);}
+.teal-panel .dest-block p{color:rgba(251,249,240,0.72);}
+
+.decor-fish{position:absolute; color:rgba(251,249,240,0.55); z-index:1; animation:swim linear infinite;}
+.decor-fish .ic{width:100%; height:100%;}
+@keyframes swim{ from{transform:translateX(-15vw) scaleX(1);} 49%{transform:translateX(105vw) scaleX(1);} 50%{transform:translateX(105vw) scaleX(-1);} 99%{transform:translateX(-15vw) scaleX(-1);} 100%{transform:translateX(-15vw) scaleX(1);} }
+.decor-bubble{position:absolute; bottom:-6%; border-radius:50%; background:rgba(251,249,240,0.16); z-index:1; animation:riseBubble linear infinite;}
+@keyframes riseBubble{ 0%{transform:translateY(0); opacity:0;} 12%{opacity:1;} 100%{transform:translateY(-110vh); opacity:0;} }
+.light-ray{position:absolute; top:-12%; width:120px; height:140%; background:linear-gradient(180deg, rgba(255,255,255,0.09), transparent 65%); transform:rotate(10deg); pointer-events:none; z-index:1;}
+
+
+.studio-panel{background:linear-gradient(165deg, var(--studio-paper) 0%, #EAE0C8 100%); color:var(--ink);}
+.studio-panel .lede{color:rgba(30,42,27,0.68);}
+.studio-illustration{position:absolute; z-index:1; opacity:.95;}
+.paint-blob{position:absolute; border-radius:50%; opacity:.5; filter:blur(1px); z-index:1;}
+.brush-stroke{position:absolute; z-index:1; opacity:.35;}
+
+
+.playtopia-panel{background:radial-gradient(125% 95% at 25% 0%, var(--lime-300) 0%, var(--lime-700) 75%); color:var(--matcha-950);}
+.playtopia-panel .eyebrow{color:rgba(21,36,24,0.6);}
+.playtopia-panel .lede{color:rgba(21,36,24,0.72);}
+.playtopia-panel .fine{color:rgba(21,36,24,0.55);}
+.ball{position:absolute; border-radius:50%; z-index:1; box-shadow:inset -4px -4px 10px rgba(0,0,0,0.12), 0 6px 14px rgba(21,36,24,0.14);}
+.ball.bounce{animation:bounce 3.2s ease-in-out infinite;}
+@keyframes bounce{ 0%,100%{transform:translateY(0);} 50%{transform:translateY(-14px);} }
+.peak-bg{position:absolute; z-index:0; opacity:.16;}
+
+
+.pass{width:100%; background:var(--paper); border-radius:8px; box-shadow:var(--shadow); overflow:hidden; text-align:left;}
+.pass-head{background:var(--matcha-950); color:var(--cream); padding:22px 24px;}
+.pass-head .tiny{font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--matcha-300);}
+.pass-head h3{font-size:21px; margin-top:6px;}
+.pass-body{padding:22px 24px; display:flex; flex-direction:column; gap:16px;}
+.pass-row{display:flex; gap:12px; align-items:flex-start;}
+.pass-row .ic{color:var(--matcha-600); margin-top:2px;}
+.pass-row .k{font-size:10.5px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; color:rgba(30,42,27,0.5);}
+.pass-row .v{font-size:14.5px; font-weight:600;}
+.pass-foot{padding:14px 24px; border-top:1px dashed var(--line); font-size:12px; color:rgba(30,42,27,0.5); display:flex; justify-content:space-between;}
+
+textarea.when-input{width:100%; border:1.3px solid var(--line); border-radius:5px; padding:14px; font-family:'Work Sans',sans-serif; font-size:14px; resize:none; min-height:60px; background:var(--paper);}
+textarea.when-input:focus{outline:none; border-color:var(--matcha-600);}
+.copy-note{font-size:12px; color:rgba(30,42,27,0.55);}
+.copy-note a{color:var(--matcha-700);}
+
+.egg-trigger{position:absolute; bottom:22px; right:22px; width:10px; height:10px; border-radius:50%; background:var(--matcha-300); opacity:.5; cursor:pointer; z-index:3;}
+#screen-egg{background:var(--matcha-950); color:var(--cream);}
+#screen-egg .lede{color:rgba(251,249,240,0.72);}
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+<button class="back-btn" id="backBtn" onclick="goBack()" aria-label="Kembali">
+  <svg class="ic" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg>
+</button>
+
+<!-- ============ HERO ============ -->
+<div class="screen active" id="screen-opening">
+  <div class="blob" style="width:320px; height:320px; background:radial-gradient(circle, var(--matcha-500), transparent 70%); top:-60px; right:-90px;"></div>
+  <div class="blob" style="width:200px; height:200px; background:radial-gradient(circle, var(--gold), transparent 70%); bottom:60px; left:-70px; opacity:.18;"></div>
+  <div class="hero-wrap">
+    <div class="monogram">Hilda</div>
+    <div>
+      <div class="hero-for">Untuk</div>
+      <div class="hero-name">Hilda Junita Sianturi</div>
+      <h1 class="hero-headline">Jadi,
+jalan yuk?</h1>
+      <p class="hero-sub">Sebelum ini jadi obrolan panjang di chat, aku susun dulu rencananya di sini - biar kamu yang tentukan mau ke mana.</p>
+      <div class="hero-date">Minggu, 20 September 2026</div>
+    </div>
+    <div class="hero-foot">
+      <button class="btn" onclick="showScreen('screen-intro')">Buka rencananya</button>
+      <div class="hero-tag">satu ajakan, disusun rapi</div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ INTRO ============ -->
+<div class="screen" id="screen-intro">
+  <div class="wrap">
+    <div class="eyebrow">Sebelum mulai</div>
+    <h2 class="headline">Oke, sedikit lebih serius.</h2>
+    <p class="lede">Aku kepikiran untuk jalan-jalan, sambil mampir ke gereja lebih dulu. Tapi daripada aku yang menentukan semuanya sendiri, aku pikir lebih adil kalau kamu yang pilih arahnya.</p>
+    <div class="iti" id="introRoute" style="flex-direction:row; justify-content:center; gap:10px;"></div>
+    <p class="fine">Bukan formulir resmi kok - cuma cara yang agak lebih rapi buat ngajak.</p>
+    <button class="btn" onclick="showScreen('screen-church')">Mulai pilih</button>
+  </div>
+</div>
+
+<!-- ============ CHURCH CHOICE ============ -->
+<div class="screen" id="screen-church">
+  <div class="wrap">
+    <div class="eyebrow">01 — Titik awal</div>
+    <h2 class="headline">Mau mulai dari mana?</h2>
+    <p class="lede">Ada dua arah, dua suasana yang cukup berbeda.</p>
+    <div class="stack">
+      <button class="card a" onclick="chooseChurch('bogor')">
+        <div class="card-icon" data-icon="church"></div>
+        <div class="card-tag">Opsi A</div>
+        <div class="card-title">Gereja Katedral Bogor</div>
+        <div class="card-cta">Pilih Bogor →</div>
+      </button>
+      <button class="card b" onclick="chooseChurch('grogol')">
+        <div class="card-icon" data-icon="church"></div>
+        <div class="card-tag">Opsi B</div>
+        <div class="card-title">Gereja Santo Kristoforus, Grogol</div>
+        <div class="card-cta">Pilih Grogol →</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ ROUTE: BOGOR ============ -->
+<div class="screen" id="screen-route-bogor">
+  <div class="wrap">
+    <div class="eyebrow">Opsi A</div>
+    <h2 class="headline">Bogor, kalau begitu.</h2>
+    <div class="iti" id="itiBogor"></div>
+    <div class="dest-block">
+      <div class="dk">Jadwal & titik ketemu</div>
+      <div class="meta-row"><div class="meta-icon" data-icon="clock"></div><div><div class="meta-k">Misa</div><div class="meta-v">Pukul 11.00</div></div></div>
+      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div></div></div>
+    </div>
+    <p class="fine">Tujuan habis misa, biar kamu yang pilih di halaman berikutnya.</p>
+    <button class="btn" onclick="showScreen('screen-bogor-dest')">Pilih tujuan</button>
+  </div>
+</div>
+
+<!-- ============ BOGOR DESTINATION CHOICE ============ -->
+<div class="screen" id="screen-bogor-dest">
+  <div class="wrap">
+    <div class="eyebrow">Setelah misa</div>
+    <h2 class="headline">Habis ini, mau ke mana?</h2>
+    <p class="lede">Dua pilihan, dua suasana yang beda banget.</p>
+    <div class="stack">
+      <button class="card c" onclick="chooseBogorDest('studio')">
+        <div class="card-icon" data-icon="brush"></div>
+        <div class="card-tag">Pilihan 1</div>
+        <div class="card-title">Visi Art Studio</div>
+        <div class="card-desc">Melukis bebas di atas kanvas, sambil ngemil dan ngopi santai — sekalian lihat-lihatan lukisan siapa yang paling bagus.</div>
+        <div class="card-cta">Pilih studio →</div>
+      </button>
+      <button class="card d" onclick="chooseBogorDest('playtopia')">
+        <div class="card-icon" data-icon="peak"></div>
+        <div class="card-tag">Pilihan 2</div>
+        <div class="card-title">Playtopia Adventure</div>
+        <div class="card-desc">Arena bermain indoor dengan puluhan wahana. Seru banget — walau harus jujur, lumayan bikin capek setelahnya.</div>
+        <div class="card-cta">Pilih Playtopia →</div>
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ STUDIO SCENE ============ -->
+<div class="screen studio-panel" id="screen-studio">
+  <svg class="studio-illustration" viewBox="0 0 140 140" style="top:14px; right:-14px; width:170px;" xmlns="http://www.w3.org/2000/svg">
+    <path d="M40 130 L70 38 L100 130" stroke="#3A5A3C" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <path d="M50 100 L90 100" stroke="#3A5A3C" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <rect x="34" y="34" width="72" height="56" rx="2" fill="#FFFDF6" stroke="#3A5A3C" stroke-width="2.2"/>
+    <circle cx="54" cy="54" r="8" fill="#B9924C" opacity=".85"/>
+    <circle cx="80" cy="66" r="10" fill="#6C8B5C" opacity=".8"/>
+    <path d="M41 80 Q60 66 100 78" stroke="#26402A" stroke-width="2" fill="none" stroke-linecap="round" opacity=".55"/>
+  </svg>
+  <svg class="studio-illustration" viewBox="0 0 100 70" style="bottom:8%; left:-18px; width:150px; opacity:.9;" xmlns="http://www.w3.org/2000/svg">
+    <path d="M10 35c0-18 18-30 40-30s42 10 42 26c0 10-8 14-16 12-6-1.5-9 2-6 7 4 7-2 14-12 14-24 0-48-15-48-29z" fill="#EFE4CE" stroke="#3A5A3C" stroke-width="2"/>
+    <circle cx="28" cy="24" r="5.5" fill="#B9924C"/>
+    <circle cx="46" cy="16" r="5.5" fill="#6C8B5C"/>
+    <circle cx="64" cy="18" r="5.5" fill="#8F6F32"/>
+    <circle cx="76" cy="30" r="5.5" fill="#A7C08D"/>
+  </svg>
+  <div class="brush-stroke" style="top:60%; left:8%; width:120px; height:26px; background:#6C8B5C; border-radius:50%; transform:rotate(-8deg);"></div>
+  <div class="wrap">
+    <div class="eyebrow">Setelah misa</div>
+    <h2 class="headline">Visi Art Studio</h2>
+    <p class="lede">Ada di dalam 0251/Societeit, konsepnya walk-in, jadi nggak perlu reservasi dulu (Bisa ganti kalau berubah pikiran). Kita bebas melukis di atas kanvas sendiri-sendiri, sambil ngemil dan ngopi santai, lalu lihat-lihatan lukisan siapa yang paling bagus :D.</p>
+    <p class="fine">Buka tiap hari jam 10.00-21.00.</p>
+    <button class="btn gold" onclick="showScreen('screen-activities-bogor')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ PLAYTOPIA SCENE ============ -->
+<div class="screen playtopia-panel" id="screen-playtopia">
+  <svg class="peak-bg" viewBox="0 0 300 140" style="bottom:-10px; left:0; width:100%;" xmlns="http://www.w3.org/2000/svg">
+    <path d="M0 140 L60 50 L100 100 L140 30 L190 100 L230 60 L300 140Z" fill="#152418"/>
+  </svg>
+  <div class="ball bounce" style="width:26px; height:26px; background:#FBF9F0; top:12%; left:12%; animation-delay:0s;"></div>
+  <div class="ball bounce" style="width:34px; height:34px; background:#B9924C; top:20%; left:70%; animation-delay:.5s;"></div>
+  <div class="ball bounce" style="width:20px; height:20px; background:#3A5A3C; top:8%; left:45%; animation-delay:1s;"></div>
+  <div class="ball" style="width:16px; height:16px; background:#FBF9F0; top:30%; left:28%;"></div>
+  <div class="ball bounce" style="width:30px; height:30px; background:#8F6F32; top:16%; left:85%; animation-delay:1.4s;"></div>
+  <div class="ball" style="width:22px; height:22px; background:#3A5A3C; top:26%; left:6%;"></div>
+  <div class="ball bounce" style="width:18px; height:18px; background:#FBF9F0; top:5%; left:60%; animation-delay:.8s;"></div>
+  <div class="wrap">
+    <div class="eyebrow">Setelah misa</div>
+    <h2 class="headline">Playtopia Adventure</h2>
+    <p class="lede">Ada di lantai 3 Lippo Plaza Ekalokasari - lebih dari 25 wahana (mungkin), dari wall climbing, wave slide, sampai kolam bola. Katanya Seru banget, tapi siap-siap agak capek setelahnya.</p>
+    <p class="fine">Buka tiap hari, 10.00-22.00.</p>
+    <button class="btn dark" onclick="showScreen('screen-activities-bogor')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ ROUTE: GROGOL ============ -->
+<div class="screen teal-panel" id="screen-route-grogol">
+  <div class="wrap">
+    <div class="eyebrow teal on-dark">Opsi B</div>
+    <h2 class="headline">Jakarta, kalau begitu.</h2>
+    <div class="iti" id="itiGrogol"></div>
+    <div class="dest-block teal">
+      <div class="dk">Jadwal & titik ketemu</div>
+      <div class="meta-row"><div class="meta-icon" data-icon="clock"></div><div><div class="meta-k">Misa</div><div class="meta-v">Pukul 08.30</div></div></div>
+      <div class="meta-row"><div class="meta-icon" data-icon="pin"></div><div><div class="meta-k">Ketemuan</div><div class="meta-v">Aku tunggu di MRT Lebak Bulus. Biar kamu enggak telat lagi kali ini.</div></div></div>
+    </div>
+    <p class="fine">Yang ini kemungkinan besar lebih ramai - dan lebih seru.</p>
+    <button class="btn teal" onclick="showScreen('screen-aquarium')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ AQUARIUM SCENE ============ -->
+<div class="screen teal-panel" id="screen-aquarium">
+  <div class="light-ray" style="left:12%;"></div>
+  <div class="light-ray" style="left:58%;"></div>
+  <div class="decor-fish" style="top:16%; width:44px; height:44px; animation-duration:16s;" data-icon="fish"></div>
+  <div class="decor-fish" style="top:68%; width:30px; height:30px; animation-duration:11s; animation-delay:-4s;" data-icon="fish"></div>
+  <div class="decor-fish" style="top:42%; width:36px; height:36px; animation-duration:19s; animation-delay:-8s;" data-icon="fish"></div>
+  <div class="decor-bubble" style="left:20%; width:10px; height:10px; animation-duration:7s;"></div>
+  <div class="decor-bubble" style="left:35%; width:6px; height:6px; animation-duration:5.5s; animation-delay:1s;"></div>
+  <div class="decor-bubble" style="left:65%; width:8px; height:8px; animation-duration:8s; animation-delay:2.5s;"></div>
+  <div class="decor-bubble" style="left:80%; width:5px; height:5px; animation-duration:6s; animation-delay:.5s;"></div>
+  <div class="wrap">
+    <div class="eyebrow teal on-dark">Setelah misa</div>
+    <h2 class="headline">Jakarta Aquarium & Safari</h2>
+    <p class="lede">Ada di dalam Neo Soho Mall, Grogol - lebih dari 600 spesies satwa air, dari terumbu karang sampai penguin. Gampang disambung dengan makan Siang setelahnya, kek tinggal turun beberapa lantai.</p>
+    <p class="fine">Buka setiap hari, siang sampai malam.</p>
+    <button class="btn teal" onclick="showScreen('screen-activities-jakarta')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ ACTIVITIES: BOGOR (shared, dynamic) ============ -->
+<div class="screen" id="screen-activities-bogor">
+  <div class="wrap">
+    <div class="eyebrow" id="actBogorEyebrow">02 - Bogor</div>
+    <h2 class="headline" id="actBogorHeadline">Nanti di sana, mau ngapain?</h2>
+    <p class="fine">Boleh pilih lebih dari satu.</p>
+    <div class="chip-grid" id="actBogorGrid"></div>
+    <div class="warn" id="warnActBogor"></div>
+    <button class="btn" onclick="goVibe('warnActBogor')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ ACTIVITIES: JAKARTA ============ -->
+<div class="screen teal-panel" id="screen-activities-jakarta">
+  <div class="wrap">
+    <div class="eyebrow teal on-dark">02 - Jakarta</div>
+    <h2 class="headline">Di Neo Soho, mau fokus ke apa?</h2>
+    <p class="fine">Boleh pilih lebih dari satu.</p>
+    <div class="chip-grid" id="actJktGrid"></div>
+    <div class="warn" id="warnActJkt"></div>
+    <button class="btn teal" onclick="goVibe('warnActJkt')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ VIBE ============ -->
+<div class="screen" id="screen-vibe">
+  <div class="wrap">
+    <div class="eyebrow">03 - Suasana</div>
+    <h2 class="headline">Biar nggak salah konsep saya.</h2>
+    <p class="fine">Kira-kira jalannya mau kayak apa?</p>
+    <div class="chip-grid" id="vibeGrid"></div>
+    <div class="warn" id="warnVibe"></div>
+    <button class="btn" onclick="goFinal()">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ FINAL QUESTION ============ -->
+<div class="screen" id="screen-final">
+  <div class="wrap">
+    <div class="eyebrow">04 - Terakhir</div>
+    <h2 class="headline">Satu hal terakhir.</h2>
+    <p class="lede">Soal hari itu nanti, ekspektasimu kira-kira gimana?</p>
+    <div class="final-list" id="finalList"></div>
+    <button class="btn" id="btnFinal" onclick="renderSummary()" disabled>Lihat rangkuman</button>
+  </div>
+</div>
+
+<!-- ============ SUMMARY ============ -->
+<div class="screen" id="screen-summary">
+  <div class="wrap">
+    <h2 class="headline">Baik, sudah lengkap.</h2>
+    <p class="lede">Ini rencana yang kamu susun:</p>
+    <div class="pass">
+      <div class="pass-head">
+        <div class="tiny">Rencana Kecil Kita</div>
+        <h3>Untuk Hilda Junita Sianturi</h3>
+      </div>
+      <div class="pass-body" id="passBody"></div>
+      <div class="pass-foot"><span>disusun oleh Hilda</span><span>diajukan oleh Kirman</span></div>
+    </div>
+    <button class="btn" onclick="showScreen('screen-ending')">Lanjut</button>
+  </div>
+</div>
+
+<!-- ============ ENDING ============ -->
+<div class="screen" id="screen-ending">
+  <div class="wrap">
+    <h2 class="headline">Sudah yakin?</h2>
+    <p class="lede">Kalau sudah, tinggal satu hal yang perlu diatur:</p>
+    <h2 class="headline" style="font-size:24px; margin-top:-4px;">Apakah ada request?</h2>
+    <p class="fine">Kalau mau, kasih tahu juga kira-kira kamu mau request apa - opsional saja.</p>
+    <textarea class="when-input" id="whenInput" placeholder="misalnya: Pulangnya jangan kelamaan, atau apapun itu. Saya menerima semua permintaan..."></textarea>
+    <button class="btn gold" onclick="sendToWhatsApp()">Kirim jawabannya</button>
+    <div class="copy-note" id="waFallback" style="display:none;"></div>
+    <p class="fine" style="margin-top:22px;">— Kirman</p>
+  </div>
+  <div class="egg-trigger" onclick="showScreen('screen-egg')"></div>
+</div>
+
+<!-- ============ EASTER EGG ============ -->
+<div class="screen" id="screen-egg">
+  <div class="wrap">
+    <h2 class="headline">Kalau u sampai di sini...</h2>
+    <p class="lede">yang pertama u tajem banget ngeliatnya. Kedua berarti gw memang benar-benar niat ya cuma untuk ngajak u jalan.</p>
+    <p class="fine">Sudah, jangan ditertawakan.</p>
+    <button class="btn-quiet" onclick="showScreen('screen-ending')">kembali</button>
+  </div>
+</div>
+
+<script>
+
+const WA_NUMBER = "6285156959662";
+
+/* ===================== ICONS ===================== */
+const ICONS = {
+  church: '<path d="M12 2v3"/><path d="M10.3 3.5h3.4"/><path d="M6 21V10L12 5l6 5v11"/><path d="M9.7 21v-5.2a2.3 2.3 0 014.6 0V21"/>',
+  leaf: '<path d="M4 20C4 11 11 4 20 4C20 13 13 20 4 20Z"/><path d="M4.5 19.5C9 15 13 11 19.5 4.5"/>',
+  bowl: '<path d="M4 11h16"/><path d="M4 11a8 5.4 0 0016 0"/><path d="M9.5 11V7.8"/><path d="M14.5 11V7.8"/>',
+  camera: '<rect x="3" y="7.5" width="18" height="12.5" rx="2"/><path d="M8.3 7.5l1.3-2.3h4.8l1.3 2.3"/><circle cx="12" cy="13.5" r="3.3"/>',
+  chat: '<rect x="4" y="5.5" width="16" height="10" rx="2"/><path d="M8.3 15.5l-2 4v-4"/>',
+  route: '<path d="M4 18c3 0 3-4 6-4s3 4 6 4 3-4 5-4"/><circle cx="4" cy="18" r="1.1" fill="currentColor" stroke="none"/><circle cx="20.5" cy="14" r="1.1" fill="currentColor" stroke="none"/>',
+  bag: '<path d="M7.5 8.3V6.2a4.5 4.5 0 019 0v2.1"/><rect x="4" y="8.3" width="16" height="12" rx="2"/>',
+  fish: '<path d="M3 12c4-4.5 12-4.5 16 0-4 4.5-12 4.5-16 0Z"/><path d="M19 12l2.6-2.6v5.2L19 12Z"/><circle cx="7.5" cy="11.2" r=".6" fill="currentColor" stroke="none"/>',
+  pin: '<path d="M12 21s6.5-6.9 6.5-11.2A6.5 6.5 0 105.5 9.8C5.5 14.1 12 21 12 21Z"/><circle cx="12" cy="9.6" r="2.1"/>',
+  clock: '<circle cx="12" cy="12" r="8"/><path d="M12 8v4.2l3 1.8"/>',
+  spark: '<path d="M12 3.5l1.7 5 5 1.7-5 1.7-1.7 5-1.7-5-5-1.7 5-1.7 1.7-5Z"/>',
+  loop: '<path d="M8.6 9.2a3 3 0 100 5.6c1.9 0 3.3-1.9 3.8-2.8.5-.9 1.9-2.8 3.8-2.8a3 3 0 110 5.6c-1.9 0-3.3-1.9-3.8-2.8-.5-.9-1.9-2.8-3.8-2.8z"/>',
+  brush: '<path d="M5 19l3.2-3.2"/><path d="M8.2 15.8L17 7a2.1 2.1 0 013 3l-8.8 8.8"/><circle cx="6" cy="18" r="1.1" fill="currentColor" stroke="none"/>',
+  peak: '<path d="M3 18.5l5.5-9 3.5 5 2.5-3.5 6.5 7.5Z"/><circle cx="17.5" cy="7.5" r="1.4"/>'
+};
+function icon(name){ return '<svg class="ic" viewBox="0 0 24 24">'+ICONS[name]+'</svg>'; }
+
+/* ===================== NAVIGATION ===================== */
+let historyStack = [];
+const PROGRESS = {
+  'screen-opening':2,'screen-intro':8,'screen-church':16,
+  'screen-route-bogor':24,'screen-bogor-dest':30,'screen-studio':38,'screen-playtopia':38,
+  'screen-route-grogol':22,'screen-aquarium':32,
+  'screen-activities-bogor':50,'screen-activities-jakarta':50,
+  'screen-vibe':66,'screen-final':80,
+  'screen-summary':94,'screen-ending':100,'screen-egg':100
+};
+
+function showScreen(id, opts){
+  opts = opts || {};
+  const current = document.querySelector('.screen.active');
+  if(current && current.id !== id && !opts.isBack){ historyStack.push(current.id); }
+  document.querySelectorAll('.screen').forEach(s=>{ s.classList.remove('active'); s.style.display='none'; });
+  const el = document.getElementById(id);
+  el.style.display='block';
+  void el.offsetWidth;
+  el.classList.add('active');
+  document.getElementById('progressFill').style.width = (PROGRESS[id]||0)+'%';
+  document.getElementById('backBtn').style.display = (id==='screen-opening' || historyStack.length===0) ? 'none' : 'flex';
+  window.scrollTo(0,0);
+}
+function goBack(){
+  if(!historyStack.length) return;
+  const prev = historyStack.pop();
+  showScreen(prev, {isBack:true});
+}
+
+/* Fill in icon placeholders that live in static markup */
+function fillIcons(){
+  document.querySelectorAll('.card-icon[data-icon]').forEach(el=>{ el.innerHTML = icon(el.dataset.icon); });
+  document.querySelectorAll('.meta-icon[data-icon]').forEach(el=>{ el.innerHTML = icon(el.dataset.icon); });
+  document.querySelectorAll('.decor-fish[data-icon]').forEach(el=>{ el.innerHTML = icon(el.dataset.icon); });
+}
+fillIcons();
+
+/* ===================== STATE ===================== */
+const state = { church:null, bogorDest:null, activities:[], vibe:[], final:'' };
+const MASS_TIME = { bogor:'Pukul 11.00', grogol:'Pukul 08.30' };
+
+/* ===================== INTRO ROUTE PREVIEW ===================== */
+(function(){
+  const seq = ['church','leaf','bowl','camera','chat'];
+  const wrap = document.getElementById('introRoute');
+  seq.forEach((name,i)=>{
+    const span = document.createElement('span');
+    span.style.opacity='0'; span.style.animation='fadeUp .4s ease forwards';
+    span.style.animationDelay = (i*0.13)+'s';
+    span.style.color = 'var(--matcha-600)';
+    span.innerHTML = icon(name);
+    wrap.appendChild(span);
+  });
+})();
+
+/* ===================== CHURCH CHOICE ===================== */
+function chooseChurch(which){
+  state.church = which;
+  state.activities = [];
+  if(which === 'bogor'){
+    renderItinerary('itiBogor', [['church','Katedral Bogor'],['pin','Kamu pilih tujuannya'],['bowl','Kulineran'],['camera','Foto-foto'],['chat','Ngobrol']], false);
+    showScreen('screen-route-bogor');
+  } else {
+    renderItinerary('itiGrogol', [['church','Santo Kristoforus'],['fish','Jakarta Aquarium & Safari'],['bowl','Kulineran'],['camera','Foto-foto'],['chat','Ngobrol']], true);
+    renderActivityGrid('actJktGrid', ACT_JKT, true, 'Explore aquarium');
+    showScreen('screen-route-grogol');
+  }
+}
+
+function renderItinerary(containerId, steps, tealMode){
+  const c = document.getElementById(containerId);
+  c.innerHTML = '';
+  steps.forEach(([ic,label], i)=>{
+    const row = document.createElement('div');
+    row.className = 'iti-row' + (tealMode ? ' teal-mode':'');
+    row.style.animationDelay = (i*0.16)+'s';
+    row.innerHTML = `<div class="dot-col"><div class="num">${icon(ic)}</div>${i<steps.length-1?'<div class="stem"></div>':''}</div><div class="txt">${label}</div>`;
+    c.appendChild(row);
+  });
+}
+
+/* ===================== BOGOR DESTINATION CHOICE ===================== */
+function chooseBogorDest(which){
+  state.bogorDest = which;
+  state.activities = [];
+  if(which === 'studio'){
+    renderActivityGrid('actBogorGrid', ACT_STUDIO, false, 'Melukis bareng');
+    document.getElementById('actBogorEyebrow').textContent = '02 — Studio';
+    document.getElementById('actBogorHeadline').textContent = 'Di studio, mau ngapain?';
+    showScreen('screen-studio');
+  } else {
+    renderActivityGrid('actBogorGrid', ACT_PLAYTOPIA, false);
+    document.getElementById('actBogorEyebrow').textContent = '02 — Playtopia';
+    document.getElementById('actBogorHeadline').textContent = 'Di Playtopia, mau ngapain?';
+    showScreen('screen-playtopia');
+  }
+}
+
+/* ===================== ACTIVITIES ===================== */
+const ACT_STUDIO = [['brush','Melukis bareng'],['bowl','Sambil ngemil & ngopi'],['camera','Foto-foto hasil lukisan'],['spark','Lihat siapa paling jago'],['chat','Ngobrol santai'],['bag','Lihat-lihat studio']];
+const ACT_PLAYTOPIA = [['route','Coba semua wahana'],['spark','Wall climbing'],['bowl','Istirahat & ngemil'],['camera','Foto-foto'],['chat','Ngobrol santai'],['bag','Lihat-lihat area']];
+const ACT_JKT = [['fish','Explore aquarium'],['bowl','Kulineran'],['camera','Foto-foto'],['route','Jalan-jalan di mall'],['chat','Ngobrol santai'],['bag','Explore sekitar']];
+
+function renderActivityGrid(gridId, list, tealMode, requiredLabel){
+  const grid = document.getElementById(gridId);
+  grid.innerHTML = '';
+  list.forEach(([ic,label])=>{
+    const chip = document.createElement('button');
+    chip.type='button'; chip.className='chip';
+    if(label === requiredLabel){
+      chip.classList.add('selected','locked');
+      if(tealMode) chip.classList.add('teal-mode');
+      chip.innerHTML = `${icon(ic)}<span>${label}</span><span class="req-tag">wajib</span>`;
+      if(!state.activities.includes(label)) state.activities.push(label);
+    } else {
+      chip.innerHTML = `${icon(ic)}<span>${label}</span>`;
+      chip.onclick = ()=> toggleMulti(chip, label, state.activities, tealMode);
+    }
+    grid.appendChild(chip);
+  });
+}
+
+function toggleMulti(chipEl, label, arr, tealMode){
+  const idx = arr.indexOf(label);
+  if(idx > -1){ arr.splice(idx,1); chipEl.classList.remove('selected','teal-mode'); }
+  else { arr.push(label); chipEl.classList.add('selected'); if(tealMode) chipEl.classList.add('teal-mode'); }
+}
+
+function goVibe(warnId){
+  if(state.activities.length===0){ document.getElementById(warnId).textContent='pilih dulu, minimal satu.'; return; }
+  showScreen('screen-vibe');
+}
+
+/* ===================== VIBE ===================== */
+const VIBE_OPTS = [['leaf','Santai'],['spark','Banyak bercanda'],['chat','Banyak ngobrol'],['camera','Banyak foto'],['bowl','Kulineran'],['loop','Spontan saja']];
+(function(){
+  const grid = document.getElementById('vibeGrid');
+  VIBE_OPTS.forEach(([ic,label])=>{
+    const chip = document.createElement('button');
+    chip.type='button'; chip.className='chip';
+    chip.innerHTML = `${icon(ic)}<span>${label}</span>`;
+    chip.onclick = ()=> toggleMulti(chip, label, state.vibe, state.church==='grogol');
+    grid.appendChild(chip);
+  });
+})();
+function goFinal(){
+  if(state.vibe.length===0){ document.getElementById('warnVibe').textContent='pilih dulu, minimal satu.'; return; }
+  showScreen('screen-final');
+}
+
+/* ===================== FINAL QUESTION ===================== */
+const FINAL_OPTS = ['Excited banget','Lumayan excited','Kita lihat nanti','Santai saja, jalan dulu'];
+(function(){
+  const wrap = document.getElementById('finalList');
+  FINAL_OPTS.forEach(label=>{
+    const opt = document.createElement('button');
+    opt.type='button'; opt.className='final-opt';
+    opt.textContent = label;
+    opt.onclick = ()=>{
+      document.querySelectorAll('.final-opt').forEach(o=>o.classList.remove('selected'));
+      opt.classList.add('selected');
+      state.final = label;
+      document.getElementById('btnFinal').disabled = false;
+    };
+    wrap.appendChild(opt);
+  });
+})();
+
+/* ===================== SUMMARY ===================== */
+function renderSummary(){
+  const startLabel = state.church==='bogor' ? 'Gereja Katedral Bogor' : 'Gereja Santo Kristoforus, Grogol';
+  let destLabel;
+  if(state.church==='bogor'){
+    destLabel = state.bogorDest==='studio' ? 'Visi Art Studio' : 'Playtopia Adventure';
+  } else {
+    destLabel = 'Jakarta Aquarium & Safari, Neo Soho';
+  }
+  const rows = [
+    ['church','Titik awal', startLabel],
+    ['clock','Jadwal misa', MASS_TIME[state.church]],
+    ['pin','Tujuan', destLabel],
+    ['spark','Aktivitas', state.activities.join(', ')],
+    ['leaf','Suasana', state.vibe.join(', ')],
+    ['chat','Ekspektasi', state.final],
+  ];
+  document.getElementById('passBody').innerHTML = rows.map(([ic,k,v])=>`
+    <div class="pass-row">${icon(ic)}<div><div class="k">${k}</div><div class="v">${v}</div></div></div>
+  `).join('');
+  showScreen('screen-summary');
+}
+
+/* ===================== SEND TO WHATSAPP ===================== */
+function sendToWhatsApp(){
+  const when = document.getElementById('whenInput').value.trim();
+  const startLabel = state.church==='bogor' ? 'Gereja Katedral Bogor' : 'Gereja Santo Kristoforus, Grogol';
+  let destLabel;
+  if(state.church==='bogor'){
+    destLabel = state.bogorDest==='studio' ? 'Visi Art Studio' : 'Playtopia Adventure';
+  } else {
+    destLabel = 'Jakarta Aquarium & Safari, Neo Soho';
+  }
+
+  let msg = `Hai Kirman, sudah aku isi rencananya.\n\n`;
+  msg += `Titik awal: ${startLabel}\n`;
+  msg += `Jadwal misa: ${MASS_TIME[state.church]}\n`;
+  msg += `Tujuan: ${destLabel}\n`;
+  msg += `Aktivitas: ${state.activities.join(', ')}\n`;
+  msg += `Suasana: ${state.vibe.join(', ')}\n`;
+  msg += `Ekspektasi: ${state.final}\n`;
+  if(when){ msg += `Kira-kira bisa: ${when}\n`; }
+  msg += `\nAyo atur jadinya.`;
+
+  const url = `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  const win = window.open(url, '_blank');
+  const fallback = document.getElementById('waFallback');
+  if(!win){
+    fallback.style.display='block';
+    fallback.innerHTML = `WhatsApp tidak terbuka otomatis. <a href="${url}" target="_blank">Klik di sini</a>.`;
+  }
+}
+</script>
+</body>
+</html>
