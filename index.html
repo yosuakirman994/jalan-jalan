@@ -107,10 +107,30 @@ p.fine{font-size:13.5px; color:rgba(30,42,27,0.55); font-style:italic;}
 
 /
 .stack{display:flex; flex-direction:column; gap:16px; width:100%;}
+.stack{
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  width:100%;
+  align-items:stretch;
+}
+
 .card{
-  text-align:left; border:none; cursor:pointer; border-radius:6px; padding:24px 22px;
-  background:var(--paper); box-shadow:var(--shadow); transition:transform .2s ease, box-shadow .2s ease;
-  display:flex; flex-direction:column; gap:8px; border-top:3px solid var(--matcha-600);
+  width:100%;
+  min-width:0;
+  box-sizing:border-box;
+  text-align:left;
+  border:none;
+  cursor:pointer;
+  border-radius:6px;
+  padding:24px 22px;
+  background:var(--paper);
+  box-shadow:var(--shadow);
+  transition:transform .2s ease, box-shadow .2s ease;
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  border-top:3px solid var(--matcha-600);
 }
 .card.b{border-top-color:var(--teal-500);}
 .card.c{border-top-color:var(--gold-deep);}
